@@ -3,18 +3,14 @@ import { FastifyPluginAsync } from 'fastify';
 import mediumApi from './services/api';
 
 export interface MyPluginOptions {
-	token: string
-  }
+    token: string
+}
   
 declare module 'fastify' {
     interface FastifyInstance  {
         medium: typeof mediumApi
     }
-    // interface FastifyReply {
-    //     myPluginProp: number;
-    // }
 }
-
 
 const mediumPLugin: FastifyPluginAsync<MyPluginOptions> = async (
     fastify,
@@ -26,5 +22,5 @@ const mediumPLugin: FastifyPluginAsync<MyPluginOptions> = async (
 
 export default fp(mediumPLugin, {
     fastify: '4.x',
-    name: 'my-plugin',
+    name: 'Medium-Plugin',
 });

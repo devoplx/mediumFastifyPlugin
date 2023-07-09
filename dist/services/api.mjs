@@ -1,6 +1,6 @@
-import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { readingTimeRegex } from '../helpers/regex';
+import { request } from '../helpers/request';
 
 class mediumApi {
   constructor() {
@@ -8,32 +8,32 @@ class mediumApi {
   }
   async accountInfo() {
     try {
-      const response = await axios.get("https://api.medium.com/v1/me", { headers: { Authorization: `Bearer ${this.token}` } });
-      return response.data.data;
+      const response = await request("/v1/me", "GET", { Authorization: `Bearer ${this.token}` });
+      return JSON.parse(response);
     } catch (error) {
       return error;
     }
   }
   async getPublications(userId) {
     try {
-      const response = await axios.get(`https://api.medium.com/v1/users/${userId}/publications`, { headers: { Authorization: `Bearer ${this.token}` } });
-      return response.data.data;
+      const response = await request(`/v1/users/${userId}/publications`, "GET", { Authorization: `Bearer ${this.token}` });
+      return JSON.parse(response);
     } catch (error) {
       return error;
     }
   }
   async getPublicationsContributors(publicationId) {
     try {
-      const response = await axios.get(`https://api.medium.com/v1/publications/${publicationId}/contributors`, { headers: { Authorization: `Bearer ${this.token}` } });
-      return response.data.data;
+      const response = await request(`/v1/publications/${publicationId}/contributors`, "GET", { Authorization: `Bearer ${this.token}` });
+      return JSON.parse(response);
     } catch (error) {
       return error;
     }
   }
   async getPostData(postLink) {
     try {
-      const response = await axios.get(postLink);
-      const html = response.data;
+      const response = await request(postLink);
+      const html = response;
       const $ = cheerio.load(html);
       const metaTags = $("meta");
       let metaInfo = {};
