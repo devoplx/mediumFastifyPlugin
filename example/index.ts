@@ -1,9 +1,10 @@
 import fastify from 'fastify';
-import myPluginAsync from '../src/index';
+import meduiumApi from '../src/index';
+import config from './config';
 
 const server = fastify();
-server.register(myPluginAsync, {
-	token: ''
+server.register(meduiumApi, {
+	token: config.token
 });
 
 server.get('/ping', async (request, reply) => {
