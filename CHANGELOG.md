@@ -1,5 +1,12 @@
 # @devoplx/mediumplugin
 
+## 1.1.0
+
+### Minor Changes
+
+-   0089567: added getPublicationsContributors function that returns a array of a publication contributors and needs a publication id.
+-   0089567: feat: added getPublication function, which returns a users publications by userId
+
 ## 1.0.1
 
 ### Patch Changes
