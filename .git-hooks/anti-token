@@ -1,20 +1,19 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const path = require("path");
+const path = require('path');
 
-fs.readFile(path.join(__dirname, "..", "example\\index.ts"), 'utf8', (err, data) => {
-	if (err) {
-	  console.error(err);
-	  return;
-	}
-  
-	const lines = data.split('\n');
-	lines.forEach((line) => {
-		console.log(line)
-	  if (/token: '([a-f0-9]{65})'/g.test(line)) {
-		console.log('Match found in line:', line);
-		process.exit(1)
-	  }
-	});
+fs.readFile(path.join(__dirname, '..', 'example', 'index.ts'), 'utf8', (err, data) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  const lines = data.split('\n');
+  lines.forEach((line) => {
+    if (/token: '([a-f0-9]{64})'/g.test(line)) {
+      console.log('Match found in line:', line);
+      process.exit(1);
+    }
   });
+});
