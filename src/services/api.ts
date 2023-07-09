@@ -24,6 +24,24 @@ class mediumApi {
 		  }
 		
 	}
+
+	async getPublications(userId: string): Promise<{
+		data: [
+			id: string,
+			name: string,
+			description: string,
+			url: string,
+			imageUrl: string,
+		]
+	} | {error: any}>{
+		try {
+			const response = await axios.get(`https://api.medium.com/v1/users/${userId}/publications`, {headers: {Authorization: `Bearer ${this.token}`}});
+			return response.data.data
+		  } catch (error: any) {
+			return error
+		  }
+		
+	}
 }
 
 

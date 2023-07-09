@@ -8,9 +8,7 @@ export interface MyPluginOptions {
   
 declare module 'fastify' {
     interface FastifyInstance  {
-        medium: {
-			accountInfo: Function
-		};
+        medium: typeof mediumApi
     }
     // interface FastifyReply {
     //     myPluginProp: number;
