@@ -3,7 +3,7 @@ import myPluginAsync from '../src/index';
 
 const server = fastify();
 server.register(myPluginAsync, {
-	token: '20da4dec0c6fce56f69e44a3487ddf0316bf1afd538a2baa431672196815dd866'
+	token: ''
 });
 
 server.get('/ping', async (request, reply) => {
