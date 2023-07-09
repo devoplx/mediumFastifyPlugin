@@ -4,7 +4,7 @@ import mediumApi from '../src/index';
 const server = fastify();
 
 server.register(mediumApi, {
-	token: ''
+	token: 'test'
 });
 
 server.get('/ping', async (request, reply) => {
