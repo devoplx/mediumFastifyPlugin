@@ -29,8 +29,16 @@ const request = (path: string, method: string = "GET", headers: { [key: string]:
     };
 
     const req = https.request(options, (res) => {
-      console.log(res.statusCode);
-      handleResponse(res);
+      /*console.log(res.statusCode);
+      handleResponse(res);*/
+      let data = '';
+        res.on('data', (chunk: any) => {
+          data += chunk;
+        });
+        res.on('end', () => {
+            console.log(data)
+          resolve(data);
+        });
     });
 
     req.on('error', (err) => {
