@@ -16,7 +16,7 @@ declare module 'fastify' {
 }
 
 
-const myPluginAsync: FastifyPluginAsync<MyPluginOptions> = async (
+const mediumPLugin: FastifyPluginAsync<MyPluginOptions> = async (
     fastify,
     options
 ) => {
@@ -24,7 +24,7 @@ const myPluginAsync: FastifyPluginAsync<MyPluginOptions> = async (
 	fastify.decorate("medium", mediumApi);
 };
 
-export default fp(myPluginAsync, {
+export default fp(mediumPLugin, {
     fastify: '4.x',
     name: 'my-plugin',
 });
