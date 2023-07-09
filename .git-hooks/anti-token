@@ -8,7 +8,7 @@ fs.readFile(path.join(__dirname, '..', 'example', 'index.ts'), 'utf8', (err, dat
   }
 
   const lines = data.split('\n');
-  const regex = /token: '([a-f0-9]{64})'/g;
+  const regex = /^[a-f0-9]{64}$/gm;
 
   lines.forEach((line) => {
     const match = regex.exec(line);
