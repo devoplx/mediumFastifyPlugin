@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as cheerio from 'cheerio';
+import { readingTimeRegex } from '../helpers/regex';
 
 class mediumApi {
     token: string
@@ -59,6 +61,69 @@ class mediumApi {
 		
 	}
 
+	async getPostData(postLink: string): Promise<{
+		publishedTimeUnfomatted: string;
+		title: string;
+		description: string;
+		image: string;
+		authorUrl: string;
+		author: string;
+		dateFormated: string;
+		name: string;
+		readingTime: string;
+		readingTimeNumber: number | Error;
+	} | {error: any}>{
+		try{
+			const response = await axios.get(postLink);
+			const html = response.data;
+
+			const $ = cheerio.load(html);
+
+			const metaTags = $('meta');
+
+			let metaInfo = {};
+
+			metaTags.each((_, element) => {
+				const name = $(element).attr('name');
+				const property = $(element).attr('property');
+				const content = $(element).attr('content');
+		  
+				// Store the meta tag values in the metaInfo object
+				if (name || property) {
+					// @ts-ignore
+				  metaInfo[name || property] = content;
+				}
+			  });
+
+			  let time = '';
+			  if ($('meta[name="twitter:data1"]').attr('content') == undefined){
+				time = '0 min read'
+			  }
+			  const readingTimeNumber = readingTimeRegex(time)
+
+
+			  const data = {
+				publishedTimeUnfomatted: $('meta[property="article:published_time"]').attr('content') || '',
+				title: $('meta[name="title"]').attr('content') || '',
+				description: $('meta[name="description"]').attr('content') || '',
+				image: $('meta[property="og:image"]').attr('content') || '',
+				authorUrl: $('meta[property="article:author"]').attr('content') || '',
+				author: $('meta[name="author"]').attr('content') || '',
+				dateFormated: $('meta[name="twitter:tile:info2:text"]').attr('content') || '',
+				name: $('meta[name="twitter:tile:info1:text"]').attr('content') || '',
+				readingTime: $('meta[name="twitter:data1"]').attr('content') || '',
+				readingTimeNumber: readingTimeNumber,
+
+			  }
+			
+			  
+			  return data;
+
+
+		} catch (error: any) {
+			return error;
+		}
+	}
 	
 }
 

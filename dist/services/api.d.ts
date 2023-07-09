@@ -30,6 +30,20 @@ declare class mediumApi {
     } | {
         error: any;
     }>;
+    getPostData(postLink: string): Promise<{
+        publishedTimeUnfomatted: string;
+        title: string;
+        description: string;
+        image: string;
+        authorUrl: string;
+        author: string;
+        dateFormated: string;
+        name: string;
+        readingTime: string;
+        readingTimeNumber: number | Error;
+    } | {
+        error: any;
+    }>;
 }
 declare const _default: mediumApi;
 
