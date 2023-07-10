@@ -1,10 +1,8 @@
 'use strict';
 
-var axios = require('axios');
 var cheerio = require('cheerio');
 var regex = require('../helpers/regex');
-
-function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
+var request = require('../helpers/request');
 
 function _interopNamespace(e) {
   if (e && e.__esModule) return e;
@@ -24,7 +22,6 @@ function _interopNamespace(e) {
   return Object.freeze(n);
 }
 
-var axios__default = /*#__PURE__*/_interopDefault(axios);
 var cheerio__namespace = /*#__PURE__*/_interopNamespace(cheerio);
 
 class mediumApi {
@@ -33,37 +30,40 @@ class mediumApi {
   }
   async accountInfo() {
     try {
-      const response = await axios__default.default.get("https://api.medium.com/v1/me", { headers: { Authorization: `Bearer ${this.token}` } });
-      return response.data.data;
+      const response = await request.request("/v1/me", "GET", { Authorization: `Bearer ${this.token}` });
+      if (typeof response !== "string")
+        throw response;
+      return JSON.parse(response)["data"];
     } catch (error) {
       return error;
     }
   }
   async getPublications(userId) {
     try {
-      const response = await axios__default.default.get(`https://api.medium.com/v1/users/${userId}/publications`, { headers: { Authorization: `Bearer ${this.token}` } });
-      return response.data.data;
+      const response = await request.request(`/v1/users/${userId}/publications`, "GET", { Authorization: `Bearer ${this.token}` });
+      if (typeof response !== "string")
+        throw response;
+      return JSON.parse(response)["data"];
     } catch (error) {
       return error;
     }
   }
   async getPublicationsContributors(publicationId) {
     try {
-      const response = await axios__default.default.get(`https://api.medium.com/v1/publications/${publicationId}/contributors`, { headers: { Authorization: `Bearer ${this.token}` } });
-      return response.data.data;
+      const response = await request.request(`/v1/publications/${publicationId}/contributors`, "GET", { Authorization: `Bearer ${this.token}` });
+      if (typeof response !== "string")
+        throw response;
+      return JSON.parse(response)["data"];
     } catch (error) {
       return error;
     }
   }
   async getPostData(postLink) {
     try {
-      const config = {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-        }
-      };
-      const response = await axios__default.default.get(postLink, config);
-      const html = response.data;
+      const response = await request.request(postLink, "GET");
+      if (typeof response !== "string")
+        throw response;
+      const html = response;
       const $ = cheerio__namespace.load(html);
       const metaTags = $("meta");
       let metaInfo = {};
@@ -97,6 +97,7 @@ class mediumApi {
       };
       return data;
     } catch (error) {
+      console.log("ERROR");
       return error;
     }
   }
