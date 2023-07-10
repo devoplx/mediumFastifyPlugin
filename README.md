@@ -35,7 +35,14 @@ npm test
 * Website: devoplx.com
 * Github: [@devoplx](https://github.com/devoplx)
 
-Made with [contributors](https://github.com/jaywcjlove/github-action-contributors).
+## Contributors
+
+As always, thanks to our amazing contributors!
+
+<a href="https://github.com/jaywcjlove/github-action-contributors/graphs/contributors">
+  <img src="https://jaywcjlove.github.io/github-action-contributors/CONTRIBUTORS.svg" />
+</a>
+
 
 ## 🤝 Contributing
 
