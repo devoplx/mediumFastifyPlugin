@@ -2,6 +2,8 @@ import axios, {AxiosRequestConfig } from 'axios';
 import * as cheerio from 'cheerio';
 import { readingTimeRegex } from '../helpers/regex';
 
+import { request } from '../helpers/request';
+
 class mediumApi {
     token: string
 
@@ -19,8 +21,9 @@ class mediumApi {
 	
 	} | {error: any}>{
 		try {
-			const response = await axios.get('https://api.medium.com/v1/me', {headers: {Authorization: `Bearer ${this.token}`}});
-			return response.data.data
+			const response = await request("/v1/me", "GET", { Authorization: `Bearer ${this.token}` });
+			if(typeof response !== "string") throw response;
+			return JSON.parse(response)["data"];
 		  } catch (error: any) {
 			return error
 		  }
@@ -37,8 +40,9 @@ class mediumApi {
 		]
 	} | {error: any}>{
 		try {
-			const response = await axios.get(`https://api.medium.com/v1/users/${userId}/publications`, {headers: {Authorization: `Bearer ${this.token}`}});
-			return response.data.data
+			const response = await request(`/v1/users/${userId}/publications`, "GET", {Authorization: `Bearer ${this.token}`});
+			if(typeof response !== "string") throw response;
+			return JSON.parse(response)["data"];
 		  } catch (error: any) {
 			return error
 		  }
@@ -53,8 +57,9 @@ class mediumApi {
 		]
 	} | {error: any}>{
 		try {
-			const response = await axios.get(`https://api.medium.com/v1/publications/${publicationId}/contributors`, {headers: {Authorization: `Bearer ${this.token}`}});
-			return response.data.data
+			const response = await request(`/v1/publications/${publicationId}/contributors`, "GET", {Authorization: `Bearer ${this.token}`});
+			if(typeof response !== "string") throw response;
+			return JSON.parse(response)["data"];
 		  } catch (error: any) {
 			return error
 		  }
@@ -74,15 +79,11 @@ class mediumApi {
 		readingTimeNumber: number | Error;
 	} | {error: any}>{
 		try{
+			const response = await request(postLink, "GET");
+
+			if(typeof response !== "string") throw response;
 			
-			const config: AxiosRequestConfig = {
-				headers: {
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
-				}
-			};
-			const response = await axios.get(postLink, config);
-			
-			const html = response.data;
+			const html = response;
 
 			const $ = cheerio.load(html);
 
@@ -132,6 +133,7 @@ class mediumApi {
 
 
 		} catch (error: any) {
+			console.log("ERROR");
 			return error;
 		}
 	}
