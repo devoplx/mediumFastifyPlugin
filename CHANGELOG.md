@@ -1,5 +1,11 @@
 # @devoplx/mediumplugin
 
+## 1.2.2
+
+### Patch Changes
+
+-   fix: fixed some bugs and added env
+
 ## 1.2.1
 
 ### Patch Changes
