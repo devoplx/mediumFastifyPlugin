@@ -12,10 +12,12 @@ server.register(meduiumApi, {
 
 server.get('/ping', async (request, reply) => {
 	const accountInfo = await server.medium.accountInfo() as any;
-    const publications = await server.medium.getPublications(accountInfo["id"]);
-    const postData = await server.medium.getPostData("https://medium.com/@saboka8352/test-f933a9a0f88f");
-    console.log(accountInfo, publications, postData);
-    return { ping: "ping", accountInfo, publications, postData };
+    // const publications = await server.medium.getPublications(accountInfo["id"]);
+    // const postData = await server.medium.getPostData("https://medium.com/@saboka8352/test-f933a9a0f88f");
+    // console.log(accountInfo, publications, postData);
+    // return { ping: "ping", accountInfo, publications, postData };
+	console.log(accountInfo);
+	return accountInfo;
 });
 
 server.listen({ port: 8080 }, (err, address) => {
