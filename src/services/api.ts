@@ -1,4 +1,3 @@
-import axios, {AxiosRequestConfig } from 'axios';
 import * as cheerio from 'cheerio';
 import { readingTimeRegex } from '../helpers/regex';
 
@@ -40,7 +39,7 @@ class mediumApi {
 		]
 	} | {error: any}>{
 		try {
-			const response = await request(`/v1/users/${userId}/publications`, "GET", {Authorization: `Bearer ${this.token}`});
+			const response = await request(`/v1/users/${userId}/publications`, "GET", { Authorization: `Bearer ${this.token}` });
 			if(typeof response !== "string") throw response;
 			return JSON.parse(response)["data"];
 		  } catch (error: any) {
@@ -57,7 +56,7 @@ class mediumApi {
 		]
 	} | {error: any}>{
 		try {
-			const response = await request(`/v1/publications/${publicationId}/contributors`, "GET", {Authorization: `Bearer ${this.token}`});
+			const response = await request(`/v1/publications/${publicationId}/contributors`, "GET", { Authorization: `Bearer ${this.token}` });
 			if(typeof response !== "string") throw response;
 			return JSON.parse(response)["data"];
 		  } catch (error: any) {
