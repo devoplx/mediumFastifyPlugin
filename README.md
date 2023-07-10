@@ -39,8 +39,8 @@ npm test
 
 As always, thanks to our amazing contributors!
 
-<a href="https://github.com/jaywcjlove/github-action-contributors/graphs/contributors">
-  <img src="https://jaywcjlove.github.io/github-action-contributors/CONTRIBUTORS.svg" />
+<a href="https://github.com/devoplx/mediumFastifyPlugin/graphs/contributors">
+  <img src="https://devoplx.github.io/mediumFastifyPlugin/CONTRIBUTORS.svg" />
 </a>
 
 
