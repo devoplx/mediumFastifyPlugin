@@ -8,13 +8,13 @@ function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 var fp__default = /*#__PURE__*/_interopDefault(fp);
 var mediumApi__default = /*#__PURE__*/_interopDefault(mediumApi);
 
-const myPluginAsync = async (fastify, options) => {
+const mediumPLugin = async (fastify, options) => {
   mediumApi__default.default.token = options.token;
   fastify.decorate("medium", mediumApi__default.default);
 };
-var src_default = fp__default.default(myPluginAsync, {
+var src_default = fp__default.default(mediumPLugin, {
   fastify: "4.x",
-  name: "my-plugin"
+  name: "Medium-Plugin"
 });
 
 module.exports = src_default;

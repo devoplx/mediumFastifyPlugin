@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-
-const conventionalCommitMessageRegExp = /^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: ([\w ])+([\s\S]*)/g;
+const fs = require('fs'),
+	conventionalCommitMessageRegExp = /^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: ([\w ])+([\s\S]*)/g,
+	commitMsgFile = process.argv[2]
+	message = fs.readFileSync(commitMsgFile, 'utf8'),
+	isValid = conventionalCommitMessageRegExp.test(message);
 let exitCode = 0;
-const commitMsgFile = process.argv[2];
-const message = fs.readFileSync(commitMsgFile, 'utf8');
-const isValid = conventionalCommitMessageRegExp.test(message);
 
 if(!isValid) {
 	console.log('Cannot commit: the commit message does not comply with conventional commits standards.');

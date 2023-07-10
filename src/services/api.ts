@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {AxiosRequestConfig } from 'axios';
 import * as cheerio from 'cheerio';
 import { readingTimeRegex } from '../helpers/regex';
 
@@ -74,7 +74,14 @@ class mediumApi {
 		readingTimeNumber: number | Error;
 	} | {error: any}>{
 		try{
-			const response = await axios.get(postLink);
+			
+			const config: AxiosRequestConfig = {
+				headers: {
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
+				}
+			};
+			const response = await axios.get(postLink, config);
+			
 			const html = response.data;
 
 			const $ = cheerio.load(html);
@@ -96,8 +103,12 @@ class mediumApi {
 			  });
 
 			  let time = '';
-			  if ($('meta[name="twitter:data1"]').attr('content') == undefined){
-				time = '0 min read'
+			  const twitterData1Content = $('meta[name="twitter:data1"]').attr('content');
+			  
+			  if (typeof twitterData1Content !== 'undefined') {
+				time = twitterData1Content;
+			  } else {
+				time = "0 min read";
 			  }
 			  const readingTimeNumber = readingTimeRegex(time)
 

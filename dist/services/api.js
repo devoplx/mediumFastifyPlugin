@@ -57,7 +57,12 @@ class mediumApi {
   }
   async getPostData(postLink) {
     try {
-      const response = await axios__default.default.get(postLink);
+      const config = {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+        }
+      };
+      const response = await axios__default.default.get(postLink, config);
       const html = response.data;
       const $ = cheerio__namespace.load(html);
       const metaTags = $("meta");
@@ -71,7 +76,10 @@ class mediumApi {
         }
       });
       let time = "";
-      if ($('meta[name="twitter:data1"]').attr("content") == void 0) {
+      const twitterData1Content = $('meta[name="twitter:data1"]').attr("content");
+      if (typeof twitterData1Content !== "undefined") {
+        time = twitterData1Content;
+      } else {
         time = "0 min read";
       }
       const readingTimeNumber = regex.readingTimeRegex(time);
