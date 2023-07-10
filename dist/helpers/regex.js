@@ -1,15 +1,19 @@
 'use strict';
 
 const readingTimeRegex = (readingTime) => {
-  const numberMatch = readingTime.match(/\d+/);
+  const numberRegex = /^(\d+)\s+min\s+read$/;
+  const numberMatch = readingTime.match(numberRegex);
+  let number;
   if (numberMatch) {
-    const number = parseInt(numberMatch[0], 10);
-    console.log("Number:", number);
+    number = parseInt(numberMatch[0], 10);
     return number;
   } else {
-    console.log("Number not found");
+    console.log("Number not found", number);
   }
-  throw new Error("Expected number");
+  if (typeof number !== "number") {
+    return new Error("expected number");
+  }
+  return number;
 };
 
 exports.readingTimeRegex = readingTimeRegex;

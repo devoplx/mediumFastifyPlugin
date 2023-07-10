@@ -1,6 +1,6 @@
+import axios, {AxiosRequestConfig } from 'axios';
 import * as cheerio from 'cheerio';
 import { readingTimeRegex } from '../helpers/regex';
-import { request } from '../helpers/request';
 
 class mediumApi {
     token: string
@@ -19,8 +19,8 @@ class mediumApi {
 	
 	} | {error: any}>{
 		try {
-			const response = await request("/v1/me", "GET", { Authorization: `Bearer ${this.token}` });
-			return JSON.parse(response);
+			const response = await axios.get('https://api.medium.com/v1/me', {headers: {Authorization: `Bearer ${this.token}`}});
+			return response.data.data
 		  } catch (error: any) {
 			return error
 		  }
@@ -37,8 +37,8 @@ class mediumApi {
 		]
 	} | {error: any}>{
 		try {
-			const response = await request(`/v1/users/${userId}/publications`, "GET", { Authorization: `Bearer ${this.token}` });
-			return JSON.parse(response);
+			const response = await axios.get(`https://api.medium.com/v1/users/${userId}/publications`, {headers: {Authorization: `Bearer ${this.token}`}});
+			return response.data.data
 		  } catch (error: any) {
 			return error
 		  }
@@ -53,8 +53,8 @@ class mediumApi {
 		]
 	} | {error: any}>{
 		try {
-			const response = await request(`/v1/publications/${publicationId}/contributors`, "GET", { Authorization: `Bearer ${this.token}` });
-			return JSON.parse(response);
+			const response = await axios.get(`https://api.medium.com/v1/publications/${publicationId}/contributors`, {headers: {Authorization: `Bearer ${this.token}`}});
+			return response.data.data
 		  } catch (error: any) {
 			return error
 		  }
@@ -74,8 +74,15 @@ class mediumApi {
 		readingTimeNumber: number | Error;
 	} | {error: any}>{
 		try{
-			const response = await request(postLink);
-			const html = response;
+			
+			const config: AxiosRequestConfig = {
+				headers: {
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
+				}
+			};
+			const response = await axios.get(postLink, config);
+			
+			const html = response.data;
 
 			const $ = cheerio.load(html);
 
@@ -96,8 +103,12 @@ class mediumApi {
 			  });
 
 			  let time = '';
-			  if ($('meta[name="twitter:data1"]').attr('content') == undefined){
-				time = '0 min read'
+			  const twitterData1Content = $('meta[name="twitter:data1"]').attr('content');
+			  
+			  if (typeof twitterData1Content !== 'undefined') {
+				time = twitterData1Content;
+			  } else {
+				time = "0 min read";
 			  }
 			  const readingTimeNumber = readingTimeRegex(time)
 
