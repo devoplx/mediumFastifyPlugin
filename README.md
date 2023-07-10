@@ -35,6 +35,8 @@ npm test
 * Website: devoplx.com
 * Github: [@devoplx](https://github.com/devoplx)
 
+Made with [contributors](https://github.com/jaywcjlove/github-action-contributors).
+
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/devoplx/mediumFastifyPlugin/issues). You can also take a look at the [contributing guide](https://github.com/devoplx/mediumFastifyPlugin/blob/master/CONTRIBUTING.md).
