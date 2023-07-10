@@ -1,16 +1,19 @@
 import fastify from 'fastify';
 import meduiumApi from '../src/index';
-import config from './config';
+import dotenv from 'dotenv';
+import path from "path";
+
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const server = fastify();
 server.register(meduiumApi, {
-	token: config.token
+	token: process.env.TOKEN as string
 });
 
 server.get('/ping', async (request, reply) => {
-	const accountInfo = await server.medium.accountInfo();
-    const publications = await server.medium.getPublications("1f8472ea0e70c1d3b2a40b41b1e250a829d1b347bc9a9aae551222b66f90eaacd");
-    const postData = await server.medium.getPostData("https://medium.com/dev-genius/k8s-tools-k8sgpt-1fd35e6affc");
+	const accountInfo = await server.medium.accountInfo() as any;
+    const publications = await server.medium.getPublications(accountInfo["id"]);
+    const postData = await server.medium.getPostData("https://medium.com/@saboka8352/test-f933a9a0f88f");
     console.log(accountInfo, publications, postData)
     return { ping: "ping", accountInfo, publications, postData };
 });
