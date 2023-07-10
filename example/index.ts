@@ -1,7 +1,6 @@
 import meduiumApi from '../src/index';
 import config from './config';
 import fastify from 'fastify';
-
 const server = fastify();
 server.register(meduiumApi, {
 	token: config.token
