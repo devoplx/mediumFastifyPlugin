@@ -7,7 +7,8 @@ const ERR_BAD_REQUEST = createError('ERR_INT_ERROR', 'Error: %s', 500);
 const request = <T>(
     path: string,
     method: string = 'GET',
-    headers: { [key: string]: string } = {}
+    headers: { [key: string]: string } = {},
+    body: object = {}
 ): Promise<Response<T> | FastifyError> => {
     return new Promise((resolve, reject) => {
         headers = {
@@ -71,6 +72,10 @@ const request = <T>(
         req.on('error', (error) => {
             reject(ERR_BAD_REQUEST(error));
         });
+
+        if (method === "POST" && body) {
+            req.write(JSON.stringify(body));
+          }
 
         req.end();
     });

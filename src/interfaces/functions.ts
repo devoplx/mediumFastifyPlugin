@@ -37,3 +37,16 @@ export interface accountInfoReturn {
     imageUrl: string;
     name: string;
 }
+
+export interface createPostReturn {
+    id: string,
+    title: string,
+    authorId: string,
+    tags: object,
+    url: string,
+    canonicalUrl: string,
+    publishStatus: string,
+    publishedAt: number,
+    license: string,
+    licenseUrl: string
+}

@@ -8,6 +8,7 @@ import {
     getPublicationsReturn,
     getPublicationsContributors,
     getPostDataReturn,
+    createPostReturn,
 } from '../interfaces/functions';
 
 class mediumApi {
@@ -130,6 +131,42 @@ class mediumApi {
             };
 
             return data;
+        } catch (error: any) {
+            return error;
+        }
+    }
+
+    async createPost(
+        accountId: string,
+        title: string,
+        content: string,
+        contentFormat: string = "html",
+        tags: object = [],
+        canonicalUrl: string = "",
+        publishStatus: string = "public",
+        license: string = "",
+        notifyFollowers: boolean = true
+    ): Promise<createPostReturn | { error: any }> {
+        try {
+            const response:
+                | Response<createPostReturn>
+                | FastifyError = await request(
+                `/v1/users/${accountId}/posts`,
+                'POST',
+                { Authorization: `Bearer ${this.token}` },
+                {
+                    title: title,
+                    contentFormat,
+                    content: content,
+                    canonicalUrl,
+                    tags,
+                    publishStatus,
+                    license,
+                    notifyFollowers
+                }
+            );
+            if (response instanceof Error) throw response;
+            return response.data;
         } catch (error: any) {
             return error;
         }
