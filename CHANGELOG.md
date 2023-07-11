@@ -1,5 +1,11 @@
 # @devoplx/mediumplugin
 
+## 2.0.0
+
+### Major Changes
+
+-   feat: major function response formats
+
 ## 1.2.2
 
 ### Patch Changes
