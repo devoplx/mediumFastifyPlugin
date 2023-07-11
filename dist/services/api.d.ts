@@ -1,47 +1,18 @@
+import { accountInfoReturn, getPublicationsReturn, getPublicationsContributors, getPostDataReturn } from '../interfaces/functions.js';
+
 declare class mediumApi {
     token: string;
     constructor();
-    accountInfo(): Promise<{
-        id: string;
-        username: string;
-        url: string;
-        imageUrl: string;
-        name: string;
-    } | {
+    accountInfo(): Promise<accountInfoReturn | {
         error: any;
     }>;
-    getPublications(userId: string): Promise<{
-        data: [
-            id: string,
-            name: string,
-            description: string,
-            url: string,
-            imageUrl: string
-        ];
-    } | {
+    getPublications(userId: string): Promise<getPublicationsReturn[] | {
         error: any;
     }>;
-    getPublicationsContributors(publicationId: string): Promise<{
-        data: [
-            publicationId: string,
-            userId: string,
-            role: string
-        ];
-    } | {
+    getPublicationsContributors(publicationId: string): Promise<getPublicationsContributors[] | {
         error: any;
     }>;
-    getPostData(postLink: string): Promise<{
-        publishedTimeUnfomatted: string;
-        title: string;
-        description: string;
-        image: string;
-        authorUrl: string;
-        author: string;
-        dateFormated: string;
-        name: string;
-        readingTime: string;
-        readingTimeNumber: number | Error;
-    } | {
+    getPostData(postLink: string): Promise<getPostDataReturn | {
         error: any;
     }>;
 }

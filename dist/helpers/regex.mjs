@@ -9,6 +9,7 @@ const readingTimeRegex = (readingTime) => {
     console.log("Number not found", number);
   }
   if (typeof number !== "number") {
+    console.log(number);
     return new Error("expected number");
   }
   return number;

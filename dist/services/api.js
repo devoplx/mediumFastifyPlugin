@@ -30,40 +30,53 @@ class mediumApi {
   }
   async accountInfo() {
     try {
-      const response = await request.request("/v1/me", "GET", { Authorization: `Bearer ${this.token}` });
-      if (typeof response !== "string")
+      const response = await request.request("/v1/me", "GET", {
+        Authorization: `Bearer ${this.token}`
+      });
+      if (response instanceof Error)
         throw response;
-      return JSON.parse(response)["data"];
+      const data = {
+        id: response.data.id,
+        url: response.data.url,
+        username: response.data.username,
+        imageUrl: response.data.imageUrl,
+        name: response.data.name
+      };
+      return response.data;
     } catch (error) {
       return error;
     }
   }
   async getPublications(userId) {
     try {
-      const response = await request.request(`/v1/users/${userId}/publications`, "GET", { Authorization: `Bearer ${this.token}` });
-      if (typeof response !== "string")
+      const response = await request.request(`/v1/users/${userId}/publications`, "GET", {
+        Authorization: `Bearer ${this.token}`
+      });
+      if (response instanceof Error)
         throw response;
-      return JSON.parse(response)["data"];
+      return response.data;
     } catch (error) {
       return error;
     }
   }
   async getPublicationsContributors(publicationId) {
     try {
-      const response = await request.request(`/v1/publications/${publicationId}/contributors`, "GET", { Authorization: `Bearer ${this.token}` });
-      if (typeof response !== "string")
-        throw response;
-      return JSON.parse(response)["data"];
+      const response = await request.request(
+        `/v1/publications/${publicationId}/contributors`,
+        "GET",
+        { Authorization: `Bearer ${this.token}` }
+      );
+      return response.data;
     } catch (error) {
       return error;
     }
   }
   async getPostData(postLink) {
     try {
-      const response = await request.request(postLink, "GET");
-      if (typeof response !== "string")
+      const response = await request.request(postLink);
+      if (response instanceof Error)
         throw response;
-      const html = response;
+      const html = response.data;
       const $ = cheerio__namespace.load(html);
       const metaTags = $("meta");
       let metaInfo = {};
@@ -75,16 +88,15 @@ class mediumApi {
           metaInfo[name || property] = content;
         }
       });
-      let time = "";
-      const twitterData1Content = $('meta[name="twitter:data1"]').attr("content");
-      if (typeof twitterData1Content !== "undefined") {
-        time = twitterData1Content;
-      } else {
-        time = "0 min read";
+      let time = "0 min read";
+      if ($('meta[name="twitter:data1"]').attr("content") !== void 0) {
+        time = $('meta[name="twitter:data1"]').attr("content");
       }
       const readingTimeNumber = regex.readingTimeRegex(time);
       const data = {
-        publishedTimeUnfomatted: $('meta[property="article:published_time"]').attr("content") || "",
+        publishedTimeUnfomatted: $('meta[property="article:published_time"]').attr(
+          "content"
+        ) || "",
         title: $('meta[name="title"]').attr("content") || "",
         description: $('meta[name="description"]').attr("content") || "",
         image: $('meta[property="og:image"]').attr("content") || "",
@@ -97,7 +109,6 @@ class mediumApi {
       };
       return data;
     } catch (error) {
-      console.log("ERROR");
       return error;
     }
   }
