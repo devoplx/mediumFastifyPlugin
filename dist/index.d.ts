@@ -1,6 +1,7 @@
 import * as fastify from 'fastify';
 import { FastifyPluginAsync } from 'fastify';
 import _default$1 from './services/api.js';
+import './interfaces/functions.js';
 
 interface MyPluginOptions {
     token: string;
