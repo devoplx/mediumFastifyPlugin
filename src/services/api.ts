@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { readingTimeRegex } from '../helpers/regex';
+import { parseTime } from '../helpers/regex';
 import { request } from '../helpers/request';
 import { FastifyError } from 'fastify';
 import {
@@ -104,7 +104,7 @@ class mediumApi {
                 // @ts-ignore
                 time = $('meta[name="twitter:data1"]').attr('content');
             }
-            const readingTimeNumber = readingTimeRegex(time);
+            const readingTimeNumber = parseTime(time);
 
             const data = {
                 publishedTimeUnfomatted:
