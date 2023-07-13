@@ -1,20 +1,11 @@
-const readingTimeRegex = (readingTime: string): number | Error => {
-    const numberRegex = /^(\d+)\s+min\s+read$/;
-    const numberMatch = readingTime.match(numberRegex);
-    let number;
-    if (numberMatch) {
-        number = parseInt(numberMatch[0], 10);
-        return number;
-    } else {
-        console.log('Number not found', number);
+const readingTimeRE = /^(\d+)\s+min\s+read$/;
+
+const parseTime = (readingTime: string): number | Error => {
+    if (readingTimeRE.test(readingTime)) {
+        return parseInt(readingTime, 10);
     }
 
-    if (typeof number !== 'number') {
-        console.log(number);
-        return new Error('expected number');
-    }
-
-    return number;
+    return new Error('expected number');
 };
 
-export { readingTimeRegex };
+export {parseTime}
